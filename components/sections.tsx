@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import {Card} from '@/components/ui/card';
+import {Badge} from '@/components/ui/badge';
 import type { ReactNode } from 'react';
 import {getContact,getServices} from '@/lib/site-content';
 import {getArticles} from '@/lib/articles';
@@ -18,21 +20,21 @@ export async function BranchCards({maps = false}: {maps?:boolean}) {
   const {branches}=await getContact();
   return <div className="branch-grid">{branches.map((branch,index) => {
     const query = encodeURIComponent(`PAMA Grooming ${branch.name}`);
-    return <article className="branch" key={branch.name}>
-      <span className="tag">PAMA GROOMING · BRANCH 0{index+1}</span><h3>สาขา{branch.name}</h3>
+    return <Card role="article" className="branch" key={branch.name}>
+      <Badge variant="secondary" className="tag">PAMA BRANCH 0{index+1}</Badge><h3>สาขา{branch.name}</h3>
       <p>อาบน้ำ · ตัดขน · ฝากเลี้ยง สุนัขและแมว<br/>เวลาเปิด–ปิด: {branch.hours || 'กรุณาสอบถามสาขาผ่าน LINE'}</p>
       {branch.address && <p>{branch.address}</p>}<div className="contact"><a href={`tel:${branch.phone}`}>โทร {branch.display} ↗</a><a href={branch.url} target="_blank" rel="noopener noreferrer">LINE {branch.line} ↗</a>{branch.fb && <a href={branch.fb} target="_blank" rel="noopener noreferrer">Facebook สาขา{branch.name} ↗</a>}</div>
       <div className="actions"><Button asChild><a href={branch.url} target="_blank" rel="noopener noreferrer"><MessageCircle aria-hidden="true"/>จองคิวสาขานี้<ArrowUpRight className="action-arrow" aria-hidden="true"/></a></Button><Button variant="outline" asChild><a href={branch.mapUrl || `https://www.google.com/maps/search/?api=1&query=${query}`} target="_blank" rel="noopener noreferrer"><MapPin aria-hidden="true"/>ค้นหาแผนที่</a></Button></div>
       {maps && <><iframe title={`แผนที่ค้นหา PAMA Grooming ${branch.name}`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={branch.mapEmbedUrl || `https://maps.google.com/maps?q=${query}&output=embed`}/>{!branch.mapEmbedUrl && <p className="note">แผนที่แสดงผลการค้นหา กรุณายืนยันหมุดร้านกับสาขาก่อนเดินทาง</p>}</>}
-    </article>;
+    </Card>;
   })}</div>;
 }
 export async function ServiceCards() {
   const {services,imageNote}=await getServices();
-  return <><div className="cards">{services.map(service => <article className="service" key={`${service.number}-${service.title}`}>
+  return <><div className="cards">{services.map(service => <Card role="article" className="service" key={`${service.number}-${service.title}`}>
     <Link href="/services" aria-label={`ดูบริการและราคา ${service.title}`}><img src={service.image} alt={service.imageAlt?.replaceAll('ภาพประกอบ','') || service.title} loading="lazy" width={700} height={460}/></Link>
-    <div className="body"><span className="num">{service.number} / {service.label}</span><h3>{service.title}</h3><p>{service.description}</p><div className="row"><span>สอบถามราคาผ่าน LINE</span><Link className="link" href="/services">ดูรายละเอียด ↗</Link></div></div>
-  </article>)}</div>{imageNote && !imageNote.includes('ภาพประกอบ') && <p className="note">{imageNote}</p>}</>;
+    <div className="body"><Badge variant="secondary" className="num">{service.number} / {service.label}</Badge><h3>{service.title}</h3><p>{service.description}</p><div className="row"><span>สอบถามราคาผ่าน LINE</span><Link className="link" href="/services">ดูรายละเอียด ↗</Link></div></div>
+  </Card>)}</div>{imageNote && !imageNote.includes('ภาพประกอบ') && <p className="note">{imageNote}</p>}</>;
 }
 export function CallToAction() {
   return <div className="wrap section"><div className="callout"><div><h2>นัดวันดูแล ให้เจ้าตัวโปรด</h2><p>เลือกสาขาที่สะดวก แล้วทัก LINE เพื่อสอบถามราคาและคิวว่าง</p></div><BookingButton/></div></div>;
@@ -46,7 +48,7 @@ export function Reviews() {
 export async function Articles() {
   const posts=await getArticles();
   if(!posts.length)return <p className="muted">กำลังเตรียมบทความดี ๆ สำหรับเพื่อนตัวโปรดของคุณ</p>;
-  return <div className="cards articles">{posts.map(post => <article key={post._id}>{post.coverUrl && <Link href={`/journal/${post.slug}`} tabIndex={-1} aria-hidden="true"><img className="article-card-image" src={post.coverUrl} alt={post.coverAlt||''} loading="lazy"/></Link>}<div className="label">{post.category}</div><h3>{post.title}</h3><p>{post.intro}</p><Link className="link" href={`/journal/${post.slug}`}>อ่านบทความ ↗</Link></article>)}</div>;
+  return <div className="cards articles">{posts.slice(0,3).map(post => <Card role="article" key={post._id}>{post.coverUrl && <Link href={`/journal/${post.slug}`} tabIndex={-1} aria-hidden="true"><img className="article-card-image" src={post.coverUrl} alt={post.coverAlt||''} loading="lazy"/></Link>}<Badge variant="secondary" className="label">{post.category}</Badge><h3>{post.title}</h3><p>{post.intro}</p><Link className="link" href={`/journal/${post.slug}`}>อ่านบทความ ↗</Link></Card>)}</div>;
 }
 export async function Footer() {
   const {branches}=await getContact();

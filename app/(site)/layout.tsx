@@ -2,6 +2,7 @@ import type {ReactNode} from 'react';
 import './globals.css';
 import './ui.css';
 import '@/components/site-motion.css';
+import './polish.css';
 import {SiteMotion} from '@/components/site-motion';
 import {BackToTop} from '@/components/back-to-top';
 import {BookingProvider} from '@/components/booking';
