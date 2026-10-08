@@ -1,6 +1,6 @@
 export const navigation = [
-  ['/', 'หน้าแรก'], ['/services', 'บริการและราคา'], ['/branches', 'สาขาของเรา'],
-  ['/gallery', 'ผลงานของเรา'], ['/reviews', 'รีวิวลูกค้า'], ['/journal', 'สาระน่ารู้'], ['/contact', 'ติดต่อเรา'],
+  ['/', 'หน้าแรก'], ['/services', 'บริการและราคา'],
+  ['/gallery', 'ผลงานของเรา'], ['/reviews', 'รีวิวลูกค้า'], ['/journal', 'สาระน่ารู้'], ['/branches', 'สาขาของเรา'], ['/contact', 'ติดต่อเรา'],
 ] as const;
 
 export const branches = [
@@ -13,12 +13,17 @@ export const images = {
   dog:'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=700&q=85',
   cat:'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=700&q=85',
   stay:'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=700&q=85',
+  groomService:'/images/home/groom-service.webp',
+  boardingService:'/images/home/boarding-service.webp',
+  galleryDog:'/images/home/gallery-dog.webp',
+  galleryCat:'/images/home/gallery-cat.webp',
+  galleryPuppy:'/images/home/gallery-puppy.webp',
 };
 
 export const services = [
   {number:'01', title:'อาบน้ำ & ดูแลขน', description:'สะอาด สดชื่น พร้อมกลับไปกอดกันอีกครั้ง สอบถามรายละเอียดบริการที่เหมาะกับน้องได้ทาง LINE', image:images.dog, label:'BATH & CARE'},
-  {number:'02', title:'ตัดขน & จัดทรง', description:'เลือกทรงที่ชอบ และพูดคุยเรื่องลักษณะขนกับทีมงานก่อนนัดหมาย', image:images.cat, label:'GROOM & STYLE'},
-  {number:'03', title:'ฝากเลี้ยงสัตว์เลี้ยง', description:'วางแผนวันรับ–ส่ง และสอบถามเงื่อนไขการเข้าพักกับสาขาที่สะดวก', image:images.stay, label:'PET BOARDING'},
+  {number:'02', title:'ตัดขน & จัดทรง', description:'เลือกทรงที่ชอบ และพูดคุยเรื่องลักษณะขนกับทีมงานก่อนนัดหมาย', image:images.groomService, label:'GROOM & STYLE'},
+  {number:'03', title:'ฝากเลี้ยงสัตว์เลี้ยง', description:'วางแผนวันรับ–ส่ง และสอบถามเงื่อนไขการเข้าพักกับสาขาที่สะดวก', image:images.boardingService, label:'PET BOARDING'},
 ];
 
 export const posts = [

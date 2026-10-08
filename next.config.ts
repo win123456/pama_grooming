@@ -2,6 +2,7 @@ import type { NextConfig } from 'next';
 
 const config: NextConfig = {
   poweredByHeader: false,
+  devIndicators: false,
   async redirects() {
     const pages = ['services', 'branches', 'gallery', 'reviews', 'journal', 'contact'];
     return [

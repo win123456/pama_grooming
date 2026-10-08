@@ -1,0 +1,29 @@
+{
+  "generator": "Built-in ImageGen",
+  "images": [
+    {
+      "file": "pomeranian-before.webp",
+      "prompt": "Preserve dog identity, pose and background; change only to a longer slightly unkempt healthy coat."
+    },
+    {
+      "file": "pomeranian-after.webp",
+      "prompt": "A small white Pomeranian with a neat rounded fluffy grooming cut sitting facing the camera on a grooming table. Pale mint salon background."
+    },
+    {
+      "file": "poodle-before.webp",
+      "prompt": "Preserve dog identity, pose and background; change only to a longer slightly unkempt healthy coat."
+    },
+    {
+      "file": "poodle-after.webp",
+      "prompt": "A small apricot poodle with a neat teddy bear trim sitting facing camera on a grooming table. Warm peach salon background."
+    },
+    {
+      "file": "schnauzer-before.webp",
+      "prompt": "Preserve dog identity, pose and background; change only to a longer slightly unkempt healthy coat."
+    },
+    {
+      "file": "schnauzer-after.webp",
+      "prompt": "A small silver grey miniature schnauzer with neat eyebrows and beard sitting facing camera on a grooming table. Powder blue salon background."
+    }
+  ]
+}

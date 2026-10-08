@@ -1,0 +1,9 @@
+import {ArrowUpRight, Star} from 'lucide-react';
+import {customerReviewGroups, reviewSnapshotDate} from '@/lib/reviews';
+import './customer-reviews.css';
+export function CustomerReviews() {
+  return <div className="customer-reviews">{customerReviewGroups.map(group => <section className="review-branch" key={group.branch}>
+    <div className="review-branch-heading"><div><span className="eyebrow">GOOGLE REVIEWS</span><h2>สาขา{group.branch}</h2><div className="review-score"><strong>{group.rating.toFixed(1)}</strong><span className="review-stars" aria-label={`คะแนนเฉลี่ย ${group.rating} จาก 5`}>★★★★★</span><span>จาก {group.total} รีวิวบน Google</span></div></div><a className="review-google-link" href={group.url} target="_blank" rel="noopener noreferrer">ดูรีวิวทั้งหมด<ArrowUpRight size={18}/></a></div>
+    <div className="customer-review-grid">{group.reviews.map(review => <article className="customer-review-card" key={review.id}><div className="customer-review-author"><span className="review-avatar" aria-hidden="true">{Array.from(review.author)[0]}</span><div><h3>{review.author}</h3><time dateTime={review.date}>{new Date(review.date).toLocaleDateString('th-TH', {day:'numeric',month:'short',year:'numeric',timeZone:'Asia/Bangkok'})}</time></div><span className="review-google-mark" aria-label="Google">G</span></div><div className="review-stars" aria-label={`คะแนน ${review.rating} จาก 5`}>{Array.from({length:5}, (_,i) => <Star key={i} size={15} fill={i<review.rating ? 'currentColor' : 'none'} aria-hidden="true"/>)}</div><blockquote>{review.excerpt}</blockquote><a href={review.url} target="_blank" rel="noopener noreferrer">อ่านรีวิวบน Google<ArrowUpRight size={15}/></a></article>)}</div>
+  </section>)}<p className="review-snapshot-note">ข้อความบางส่วนจากรีวิวที่ Google แสดง · ข้อมูล ณ {reviewSnapshotDate} · คะแนนและจำนวนรีวิวอาจเปลี่ยนแปลง</p></div>;
+}
