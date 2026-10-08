@@ -9,6 +9,7 @@ import {CustomerReviews} from './customer-reviews';
 import { BookingButton } from './booking';
 import {Button} from '@/components/ui/button';
 import {ArrowUpRight,MapPin,MessageCircle} from 'lucide-react';
+import {branchOffersBoarding} from '@/lib/cms-defaults';
 
 export function PageTitle({eyebrow,title,description}: {eyebrow:string;title:string;description:string}) {
   return <div className="wrap"><div className="page-title"><span className="eyebrow">{eyebrow}</span><h1>{title}</h1><p>{description}</p></div></div>;
@@ -22,7 +23,7 @@ export async function BranchCards({maps = false}: {maps?:boolean}) {
     const query = encodeURIComponent(`PAMA Grooming ${branch.name}`);
     return <Card role="article" className="branch" key={branch.name}>
       <Badge variant="secondary" className="tag">PAMA BRANCH 0{index+1}</Badge><h3>สาขา{branch.name}</h3>
-      <p>อาบน้ำ · ตัดขน · ฝากเลี้ยง สุนัขและแมว<br/>เวลาเปิด–ปิด: {branch.hours || 'กรุณาสอบถามสาขาผ่าน LINE'}</p>
+      <p>อาบน้ำ · ตัดขน{branchOffersBoarding(branch) ? ' · ฝากเลี้ยง' : ''} สุนัขและแมว<br/>เวลาเปิด–ปิด: {branch.hours || 'กรุณาสอบถามสาขาผ่าน LINE'}</p>
       {branch.address && <p>{branch.address}</p>}<div className="contact"><a href={`tel:${branch.phone}`}>โทร {branch.display} ↗</a><a href={branch.url} target="_blank" rel="noopener noreferrer">LINE {branch.line} ↗</a>{branch.fb && <a href={branch.fb} target="_blank" rel="noopener noreferrer">Facebook สาขา{branch.name} ↗</a>}</div>
       <div className="actions"><Button asChild><a href={branch.url} target="_blank" rel="noopener noreferrer"><MessageCircle aria-hidden="true"/>จองคิวสาขานี้<ArrowUpRight className="action-arrow" aria-hidden="true"/></a></Button><Button variant="outline" asChild><a href={branch.mapUrl || `https://www.google.com/maps/search/?api=1&query=${query}`} target="_blank" rel="noopener noreferrer"><MapPin aria-hidden="true"/>ค้นหาแผนที่</a></Button></div>
       {maps && <><iframe title={`แผนที่ค้นหา PAMA Grooming ${branch.name}`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={branch.mapEmbedUrl || `https://maps.google.com/maps?q=${query}&output=embed`}/>{!branch.mapEmbedUrl && <p className="note">แผนที่แสดงผลการค้นหา กรุณายืนยันหมุดร้านกับสาขาก่อนเดินทาง</p>}</>}
@@ -33,7 +34,7 @@ export async function ServiceCards() {
   const {services,imageNote}=await getServices();
   return <><div className="cards">{services.map(service => <Card role="article" className="service" key={`${service.number}-${service.title}`}>
     <Link href="/services" aria-label={`ดูบริการและราคา ${service.title}`}><img src={service.image} alt={service.imageAlt?.replaceAll('ภาพประกอบ','') || service.title} loading="lazy" width={700} height={460}/></Link>
-    <div className="body"><Badge variant="secondary" className="num">{service.number} / {service.label}</Badge><h3>{service.title}</h3><p>{service.description}</p><div className="row"><span>สอบถามราคาผ่าน LINE</span><Link className="link" href="/services">ดูรายละเอียด ↗</Link></div></div>
+    <div className="body"><Badge variant="secondary" className="num">{service.number} / {service.label}</Badge><h3>{service.title}</h3><p>{service.description}</p>{service.title.includes('ฝากเลี้ยง') && <p className="service-branch-note">บริการนี้เฉพาะสาขาพหลโยธิน 64</p>}<div className="row"><span>สอบถามราคาผ่าน LINE</span><Link className="link" href="/services">ดูรายละเอียด ↗</Link></div></div>
   </Card>)}</div>{imageNote && !imageNote.includes('ภาพประกอบ') && <p className="note">{imageNote}</p>}</>;
 }
 export function CallToAction() {

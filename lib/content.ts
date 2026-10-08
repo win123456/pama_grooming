@@ -23,7 +23,7 @@ export const images = {
 export const services = [
   {number:'01', title:'อาบน้ำ & ดูแลขน', description:'สะอาด สดชื่น พร้อมกลับไปกอดกันอีกครั้ง สอบถามรายละเอียดบริการที่เหมาะกับน้องได้ทาง LINE', image:images.dog, label:'BATH & CARE'},
   {number:'02', title:'ตัดขน & จัดทรง', description:'เลือกทรงที่ชอบ และพูดคุยเรื่องลักษณะขนกับทีมงานก่อนนัดหมาย', image:images.groomService, label:'GROOM & STYLE'},
-  {number:'03', title:'ฝากเลี้ยงสัตว์เลี้ยง', description:'วางแผนวันรับ–ส่ง และสอบถามเงื่อนไขการเข้าพักกับสาขาที่สะดวก', image:images.boardingService, label:'PET BOARDING'},
+  {number:'03', title:'ฝากเลี้ยงสัตว์เลี้ยง', description:'วางแผนวันรับ–ส่ง และสอบถามเงื่อนไขการเข้าพักกับสาขาพหลโยธิน 64', image:images.boardingService, label:'PET BOARDING'},
 ];
 
 export const posts = [

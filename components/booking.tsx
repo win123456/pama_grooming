@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useRef, type ReactNode } from 'react';
 import type {Branch} from '@/lib/cms-defaults';
+import {branchOffersBoarding} from '@/lib/cms-defaults';
 import {ArrowUpRight,MapPin,MessageCircle,X} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 
@@ -28,7 +29,7 @@ export function BookingProvider({children,branches}: {children: ReactNode;branch
       <Button type="button" variant="ghost" size="icon" className="booking-close" aria-label="ปิดหน้าต่าง" onClick={() => ref.current?.close()}><X aria-hidden="true"/></Button>
       <span className="eyebrow">LET’S MAKE A DATE</span><h3 id="booking-title">เลือกสาขาที่สะดวก</h3>
       <p>ทัก LINE เพื่อสอบถามราคาและคิวว่าง<br/>การจองจะสมบูรณ์เมื่อสาขายืนยันกับคุณ</p>
-      <div className="booking-branches">{branches.map(branch => <Button key={branch.name} variant="outline" className="booking-branch" asChild><a href={branch.url} target="_blank" rel="noopener noreferrer"><MapPin className="branch-icon" aria-hidden="true"/><span><strong>{branch.name}</strong><small>LINE {branch.line}</small></span><ArrowUpRight className="action-arrow" aria-hidden="true"/></a></Button>)}</div>
+      <div className="booking-branches">{branches.map(branch => <Button key={branch.name} variant="outline" className="booking-branch" asChild><a href={branch.url} target="_blank" rel="noopener noreferrer"><MapPin className="branch-icon" aria-hidden="true"/><span><strong>{branch.name}</strong><small>{branchOffersBoarding(branch) ? 'อาบน้ำ · ตัดขน · ฝากเลี้ยง' : 'อาบน้ำ · ตัดขน'}</small><small>LINE {branch.line}</small></span><ArrowUpRight className="action-arrow" aria-hidden="true"/></a></Button>)}</div>
     </dialog>
   </BookingContext.Provider>;
 }
