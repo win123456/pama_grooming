@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react';
 import './globals.css';
+import './ui.css';
 import {BookingProvider} from '@/components/booking';
 import {Header} from '@/components/header';
 import {Footer} from '@/components/sections';

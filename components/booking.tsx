@@ -2,12 +2,14 @@
 
 import { createContext, useContext, useEffect, useRef, type ReactNode } from 'react';
 import { branches } from '@/lib/content';
+import {ArrowUpRight,MapPin,MessageCircle,X} from 'lucide-react';
+import {Button} from '@/components/ui/button';
 
 const BookingContext = createContext<(() => void) | null>(null);
 
-export function BookingButton({ className = 'btn' }: {className?: string}) {
+export function BookingButton({ className = '' }: {className?: string}) {
   const open = useContext(BookingContext);
-  return <button className={className} onClick={() => open?.()}>จองคิวผ่าน LINE <span>↗</span></button>;
+  return <Button type="button" className={`booking-button ${className}`} onClick={() => open?.()}><MessageCircle aria-hidden="true"/><span>จองคิวผ่าน LINE</span><ArrowUpRight className="action-arrow" aria-hidden="true"/></Button>;
 }
 
 export function BookingProvider({children}: {children: ReactNode}) {
@@ -16,17 +18,17 @@ export function BookingProvider({children}: {children: ReactNode}) {
   function open() {ref.current?.showModal(); document.body.classList.add('locked');}
   return <BookingContext.Provider value={open}>
     {children}
-    <BookingButton className="btn book-float" />
+    <BookingButton className="book-float" />
     <dialog ref={ref} aria-labelledby="booking-title" onClose={() => document.body.classList.remove('locked')} onClick={event => {
       if(event.target === ref.current) {
         const rect = ref.current.getBoundingClientRect();
         if(event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) ref.current.close();
       }
     }}>
-      <button className="close" aria-label="ปิดหน้าต่าง" onClick={() => ref.current?.close()}>×</button>
+      <Button type="button" variant="ghost" size="icon" className="booking-close" aria-label="ปิดหน้าต่าง" onClick={() => ref.current?.close()}><X aria-hidden="true"/></Button>
       <span className="eyebrow">LET’S MAKE A DATE</span><h3 id="booking-title">เลือกสาขาที่สะดวก</h3>
       <p>ทัก LINE เพื่อสอบถามราคาและคิวว่าง<br/>การจองจะสมบูรณ์เมื่อสาขายืนยันกับคุณ</p>
-      {branches.map(branch => <a key={branch.name} className="btn" href={branch.url} target="_blank" rel="noopener noreferrer">{branch.name} · {branch.line} ↗</a>)}
+      <div className="booking-branches">{branches.map(branch => <Button key={branch.name} variant="outline" className="booking-branch" asChild><a href={branch.url} target="_blank" rel="noopener noreferrer"><MapPin className="branch-icon" aria-hidden="true"/><span><strong>{branch.name}</strong><small>LINE {branch.line}</small></span><ArrowUpRight className="action-arrow" aria-hidden="true"/></a></Button>)}</div>
     </dialog>
   </BookingContext.Provider>;
 }

@@ -3,6 +3,8 @@ import type { ReactNode } from 'react';
 import { branches, images, services } from '@/lib/content';
 import {getArticles} from '@/lib/articles';
 import { BookingButton } from './booking';
+import {Button} from '@/components/ui/button';
+import {ArrowUpRight,MapPin,MessageCircle} from 'lucide-react';
 
 export function PageTitle({eyebrow,title,description}: {eyebrow:string;title:string;description:string}) {
   return <div className="wrap"><div className="page-title"><span className="eyebrow">{eyebrow}</span><h1>{title}</h1><p>{description}</p></div></div>;
@@ -17,7 +19,7 @@ export function BranchCards({maps = false}: {maps?:boolean}) {
       <span className="tag">PAMA GROOMING · BRANCH 0{index+1}</span><h3>สาขา{branch.name}</h3>
       <p>อาบน้ำ · ตัดขน · ฝากเลี้ยง สุนัขและแมว<br/>เวลาเปิด–ปิด: กรุณาสอบถามสาขาผ่าน LINE</p>
       <div className="contact"><a href={`tel:${branch.phone}`}>โทร {branch.display} ↗</a><a href={branch.url} target="_blank" rel="noopener noreferrer">LINE {branch.line} ↗</a><a href={branch.fb} target="_blank" rel="noopener noreferrer">Facebook สาขา{branch.name} ↗</a></div>
-      <div className="actions"><a className="btn" href={branch.url} target="_blank" rel="noopener noreferrer">จองคิวสาขานี้ ↗</a><a className="btn outline" href={`https://www.google.com/maps/search/?api=1&query=${query}`} target="_blank" rel="noopener noreferrer">ค้นหาแผนที่ ↗</a></div>
+      <div className="actions"><Button asChild><a href={branch.url} target="_blank" rel="noopener noreferrer"><MessageCircle aria-hidden="true"/>จองคิวสาขานี้<ArrowUpRight className="action-arrow" aria-hidden="true"/></a></Button><Button variant="outline" asChild><a href={`https://www.google.com/maps/search/?api=1&query=${query}`} target="_blank" rel="noopener noreferrer"><MapPin aria-hidden="true"/>ค้นหาแผนที่</a></Button></div>
       {maps && <><iframe title={`แผนที่ค้นหา PAMA Grooming ${branch.name}`} loading="lazy" referrerPolicy="no-referrer-when-downgrade" src={`https://maps.google.com/maps?q=${query}&output=embed`}/><p className="note">แผนที่แสดงผลการค้นหา กรุณายืนยันหมุดร้านกับสาขาก่อนเดินทาง</p></>}
     </article>;
   })}</div>;
@@ -37,7 +39,7 @@ export function Gallery() {
   </>;
 }
 export function Reviews() {
-  return <div className="branch-grid">{branches.map(branch => <article className="reviewbox" key={branch.name}><span className="eyebrow">CUSTOMER STORIES</span><h3>สาขา{branch.name}</h3><p>ดูความคิดเห็นจากลูกค้าบน Facebook ของสาขา<br/>คะแนนและลิงก์รีวิว Google: อยู่ระหว่างยืนยันข้อมูล</p><a className="btn outline" href={branch.fb} target="_blank" rel="noopener noreferrer">ดูความคิดเห็นบน Facebook ↗</a></article>)}</div>;
+  return <div className="branch-grid">{branches.map(branch => <article className="reviewbox" key={branch.name}><span className="eyebrow">CUSTOMER STORIES</span><h3>สาขา{branch.name}</h3><p>ดูความคิดเห็นจากลูกค้าบน Facebook ของสาขา<br/>คะแนนและลิงก์รีวิว Google: อยู่ระหว่างยืนยันข้อมูล</p><Button variant="outline" asChild><a href={branch.fb} target="_blank" rel="noopener noreferrer">ดูความคิดเห็นบน Facebook<ArrowUpRight className="action-arrow" aria-hidden="true"/></a></Button></article>)}</div>;
 }
 export async function Articles() {
   const posts=await getArticles();

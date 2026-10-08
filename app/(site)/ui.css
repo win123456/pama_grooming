@@ -1,0 +1,119 @@
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme) prefix(tw);
+@import "tailwindcss/utilities.css" layer(utilities) prefix(tw);
+
+:root {
+  --primary: #244E43;
+  --primary-foreground: #F8F5EE;
+  --secondary: #eaf0e8;
+  --secondary-foreground: #244E43;
+  --background: #F8F5EE;
+  --foreground: #252B29;
+  --accent: #eaf0e8;
+  --accent-foreground: #244E43;
+  --border: #d4dfd4;
+  --ring: #78a38b;
+  --destructive: #b42318;
+  --radius: 0.875rem;
+}
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+  --radius-md: var(--radius);
+}
+
+/* PAMA variants layered over the shared shadcn/ui Button. */
+[data-slot="button"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  height: auto;
+  padding: 13px 21px;
+  gap: 10px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.45;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .18s, box-shadow .18s, border-color .18s, transform .18s;
+}
+[data-slot="button"][data-variant="default"] {
+  background: #244e43;
+  color: #f8f5ee;
+  border-color: #244e43;
+  box-shadow: 0 2px 3px #244e4310, inset 0 1px 0 #ffffff18;
+}
+[data-slot="button"][data-variant="default"]:hover {
+  background: #326351;
+  border-color: #326351;
+  box-shadow: 0 6px 16px #244e4320;
+  transform: translateY(-1px);
+}
+[data-slot="button"][data-variant="outline"] {
+  background: #fffdf8;
+  color: #244e43;
+  border-color: #244e432d;
+  box-shadow: 0 1px 2px #244e4305;
+}
+[data-slot="button"][data-variant="outline"]:hover {
+  background: #edf2e9;
+  border-color: #244e4350;
+  box-shadow: 0 3px 10px #244e4310;
+  transform: translateY(-1px);
+}
+[data-slot="button"][data-variant="ghost"] {background: transparent;color: #244e43;box-shadow: none;}
+[data-slot="button"][data-variant="ghost"]:hover {background: #244e430b;}
+[data-slot="button"][data-size="icon"] {width: 44px;min-height: 44px;padding: 0;border-radius: 12px;}
+[data-slot="button"]:active {transform: translateY(0);box-shadow: none;}
+[data-slot="button"]:focus-visible {outline: 3px solid #78a38b;outline-offset: 4px;}
+[data-slot="button"]:disabled {opacity: .5;pointer-events: none;}
+[data-slot="button"] svg {width: 17px;height: 17px;stroke-width: 1.8;flex-shrink: 0;}
+[data-slot="button"] .action-arrow {transition: transform .18s;}
+[data-slot="button"]:hover .action-arrow {transform: translate(2px,-1px);}
+.hero .actions [data-slot="button"] {min-height: 52px;padding: 14px 22px;}
+.booking-button .action-arrow {margin-left: 3px;opacity: .85;}
+.callout .booking-button {background: #f8f5ee;color: #244e43;border-color: #f8f5ee;}
+.callout .booking-button:hover {background: #eaf0e8;border-color: #eaf0e8;}
+.book-float[data-slot="button"] {border-radius: 16px;box-shadow: 0 8px 26px #16372d2b;padding: 14px 20px;bottom: 24px;right: 24px;}
+.mobile-menu-button[data-slot="button"] {display: none;margin-left: auto;background: #244e4308;}
+.booking-close[data-slot="button"] {position: absolute;top: 16px;right: 16px;min-height: 36px;width: 36px;}
+.booking-branches {display: grid;gap: 12px;}
+.booking-branch[data-slot="button"] {width: 100%;justify-content: flex-start;padding: 18px;min-height: 82px;border-radius: 16px;white-space: normal;text-align: left;}
+.booking-branch span {display: flex;flex-direction: column;gap: 4px;}
+.booking-branch strong {font-size: 15px;font-weight: 600;}
+.booking-branch small {font-size: 12px;font-weight: 400;color: #68726c;}
+.booking-branch .branch-icon {width: 38px;height: 38px;background: #eaf0e8;padding: 10px;border-radius: 12px;box-sizing: content-box;}
+.booking-branch .action-arrow {margin-left: auto;}
+.tabs {display: inline-flex;padding: 5px;background: #e7ece2;border: 1px solid #244e4310;border-radius: 15px;gap: 4px;}
+.price-tab[data-slot="button"] {min-height: 42px;padding: 10px 24px;border-radius: 10px;}
+@media(max-width: 1050px) {.nav > .booking-button {display: none;}}
+@media(max-width: 760px) {
+  .mobile-menu-button[data-slot="button"] {display: inline-flex;}
+  .hero .actions {display: grid;grid-template-columns: 1fr;gap: 12px;}
+  .hero .actions [data-slot="button"] {width: 100%;justify-content: center;min-height: 52px;font-size: 14px;}
+  .hero .actions .booking-button {justify-content: flex-start;}
+  .hero .actions .booking-button .action-arrow {margin-left: auto;}
+  .branch .actions [data-slot="button"],.callout .booking-button {width: 100%;}
+  .reviewbox [data-slot="button"] {white-space: normal;text-align: center;}
+  .book-float[data-slot="button"] {right: 18px;bottom: calc(16px + env(safe-area-inset-bottom));min-height: 48px;padding: 12px 16px;font-size: 12px;}
+  .book-float .action-arrow {display: none;}
+  .booking-branch .branch-icon {width: 20px;height: 20px;}
+}
+@media(prefers-reduced-motion: reduce) {
+  [data-slot="button"],[data-slot="button"] .action-arrow {transition: none;}
+  [data-slot="button"]:hover,[data-slot="button"]:hover .action-arrow {transform: none;}
+}

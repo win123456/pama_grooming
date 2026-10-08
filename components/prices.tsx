@@ -1,17 +1,18 @@
 'use client';
 import { useState } from 'react';
+import {Button} from '@/components/ui/button';
 
 export function Prices() {
   const [pet, setPet] = useState('สุนัข');
   return <>
     <div className="tabs" role="tablist" aria-label="ประเภทสัตว์เลี้ยง">
-      {['สุนัข','แมว'].map(value => <button key={value} id={value === 'สุนัข' ? 'dog-tab' : 'cat-tab'} role="tab" className={`tab ${pet === value ? 'selected' : ''}`} aria-selected={pet === value} aria-controls="prices" tabIndex={pet === value ? 0 : -1} onClick={() => setPet(value)} onKeyDown={event => {
+      {['สุนัข','แมว'].map(value => <Button variant={pet===value?'default':'ghost'} key={value} id={value === 'สุนัข' ? 'dog-tab' : 'cat-tab'} role="tab" className="price-tab" aria-selected={pet === value} aria-controls="prices" tabIndex={pet === value ? 0 : -1} onClick={() => setPet(value)} onKeyDown={event => {
         if(['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) {
           event.preventDefault();
           const next = event.key === 'Home' ? 'สุนัข' : event.key === 'End' ? 'แมว' : pet === 'สุนัข' ? 'แมว' : 'สุนัข';
           setPet(next);document.getElementById(next === 'สุนัข' ? 'dog-tab' : 'cat-tab')?.focus();
         }
-      }}>{value}</button>)}
+      }}>{value}</Button>)}
     </div>
     <div id="prices" role="tabpanel" aria-labelledby={pet === 'สุนัข' ? 'dog-tab' : 'cat-tab'} tabIndex={0} className="tablebox" aria-live="polite">
       <table><thead><tr><th scope="col">บริการ</th><th scope="col">สัตว์เลี้ยง</th><th scope="col">ราคา</th></tr></thead><tbody>
