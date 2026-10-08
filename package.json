@@ -1,0 +1,10 @@
+{
+  "name": "pama-grooming",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PAMA GROOMING website",
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --check dist/app.js && node validate.mjs"
+  }
+}
