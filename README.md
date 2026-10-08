@@ -1,28 +1,49 @@
 # PAMA GROOMING
 
-เว็บไซต์ภาษาไทยสำหรับบริการอาบน้ำ ตัดขน และฝากเลี้ยงสัตว์เลี้ยง สาขารามคำแหง 114 และพหลโยธิน 64
+เว็บไซต์ Next.js App Router + TypeScript สำหรับอาบน้ำ ตัดขน และฝากเลี้ยงสัตว์เลี้ยง สาขารามคำแหง 114 และพหลโยธิน 64
 
-## เปิดเว็บไซต์
+## ใช้งานในเครื่อง
 
-เปิด `dist/index.html` ในเบราว์เซอร์ หรือใช้ static server โดยตั้ง document root เป็น `dist/` เว็บไซต์ใช้ HTML, CSS และ JavaScript ไม่มีขั้นตอนติดตั้ง dependencies
+ต้องใช้ Node.js 20.9 ขึ้นไป
 
-## แก้ไขและตรวจสอบ
+```sh
+npm ci
+npm run dev
+```
 
-- `dist/app.js`: เนื้อหา เมนู บริการ ข้อมูลติดต่อ และการเลือกสาขาจองคิว
-- `dist/style.css`: ดีไซน์และ responsive layout
-- `build.mjs`: สร้างหน้า HTML ทั้ง 10 หน้า sitemap และ robots.txt
-- `validate.mjs`: ตรวจการสร้างหน้าและลิงก์ภายใน
+เปิด http://localhost:3000
 
-ต้องใช้ Node.js เพื่อรัน `npm run build` และ `npm test`
+```sh
+npm run typecheck
+npm run build
+npm start
+```
 
-ก่อนนำขึ้น hosting ให้ตั้ง environment variable `SITE_URL` เป็น URL จริง แล้วรัน build ใหม่ ค่าเริ่มต้นคือ `https://win123456.github.io/pama_grooming` เพื่อเตรียมสำหรับ GitHub Pages แต่ยังไม่มีการเปิดใช้หรือยืนยัน deployment ที่ URL นี้
+## โครงสร้าง
 
-## เนื้อหาที่รอข้อมูลจากร้าน
+- `app/page.tsx`: หน้าแรก
+- `app/[page]/page.tsx`: บริการ สาขา ผลงาน รีวิว สาระน่ารู้ และติดต่อ
+- `app/journal/[slug]/page.tsx`: บทความแบบ prerender
+- `app/layout.tsx`: layout, metadata และ structured data
+- `app/sitemap.ts`, `app/robots.ts`: sitemap และ robots
+- `components/`: เมนู ปุ่มจอง ตารางราคา และส่วนเนื้อหา
+- `lib/content.ts`: ข้อมูลติดต่อ บริการ และบทความ
+- `app/globals.css`: สี ฟอนต์ และ responsive layout เดิม
 
-ราคาจริง เวลาเปิด–ปิด ลิงก์และหมุด Google Maps ที่ยืนยันแล้ว รูป Before & After และผลงานจริง คะแนนและรีวิว Google ของแต่ละสาขา
+ทุกหน้าหลักสร้าง HTML ตอน build เมนู ปุ่มจอง และแท็บราคาใช้ client components มี redirect ถาวรจาก URL `.html` เดิม
 
-ภาพที่แสดงอยู่เป็นภาพประกอบจาก Unsplash ไม่ใช่ผลงานของร้าน เว็บไซต์ระบุภาพประกอบไว้ และไม่ใช้รีวิวหรือคะแนนสมมติ แผนที่ปัจจุบันเป็นผลการค้นหา ต้องยืนยันหมุดกับสาขาก่อนเดินทาง
+## Vercel
 
-ปุ่มจองเปิด LINE ของสาขาที่เลือก การจองจะสมบูรณ์เมื่อร้านยืนยันในแชต ไม่มีระบบยืนยันคิวอัตโนมัติ
+Import repository `win123456/pama_grooming` ใน Vercel เลือก Framework Preset เป็น Next.js และ Root Directory เป็น `.` ตั้ง Install Command เป็น `npm ci` และ Build Command เป็น `npm run build` ตาม `vercel.json`
 
-Google Fonts, รูป Unsplash และแผนที่ Google ต้องเชื่อมต่ออินเทอร์เน็ต
+ตั้ง environment variable `NEXT_PUBLIC_SITE_URL` เป็น production URL จริง เช่น `https://your-project.vercel.app` หรือ custom domain แล้ว redeploy เมื่อเปลี่ยน domain ถ้าไม่ตั้งค่า ระบบใช้ `VERCEL_PROJECT_PRODUCTION_URL` ที่ Vercel ให้มา และ fallback เป็น localhost สำหรับการพัฒนา
+
+อย่าตั้ง Output Directory เป็น `dist` เพราะโปรเจกต์นี้ใช้ Next.js
+
+## ข้อมูลที่ยังรอจากร้าน
+
+ราคาจริง เวลาเปิด–ปิด หมุด Google Maps ที่ยืนยันแล้ว ภาพผลงานและ Before & After จริง คะแนนและรีวิว Google แต่ละสาขา
+
+ภาพ Unsplash เป็นภาพประกอบ ไม่ใช่ผลงานของร้าน แผนที่เป็นผลการค้นหา ต้องยืนยันหมุดกับสาขาก่อนเดินทาง เว็บไซต์ไม่มีรีวิวหรือคะแนนสมมติ
+
+ปุ่มจองเปิด LINE ของสาขาที่เลือก คิวสมบูรณ์เมื่อร้านยืนยันในแชต ไม่มีการยืนยันคิวอัตโนมัติ

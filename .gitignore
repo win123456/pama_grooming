@@ -4,3 +4,8 @@ node_modules/
 .env.*
 *.tar.gz
 *.zip
+.next/
+.vercel/
+out/
+*.tsbuildinfo
+next-env.d.ts

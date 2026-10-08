@@ -1,0 +1,7 @@
+.git
+.openai
+.next
+node_modules
+dist
+*.tar.gz
+*.zip
