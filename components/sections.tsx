@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
-import { branches, images, posts, services } from '@/lib/content';
+import { branches, images, services } from '@/lib/content';
+import {getArticles} from '@/lib/articles';
 import { BookingButton } from './booking';
 
 export function PageTitle({eyebrow,title,description}: {eyebrow:string;title:string;description:string}) {
@@ -38,8 +39,10 @@ export function Gallery() {
 export function Reviews() {
   return <div className="branch-grid">{branches.map(branch => <article className="reviewbox" key={branch.name}><span className="eyebrow">CUSTOMER STORIES</span><h3>สาขา{branch.name}</h3><p>ดูความคิดเห็นจากลูกค้าบน Facebook ของสาขา<br/>คะแนนและลิงก์รีวิว Google: อยู่ระหว่างยืนยันข้อมูล</p><a className="btn outline" href={branch.fb} target="_blank" rel="noopener noreferrer">ดูความคิดเห็นบน Facebook ↗</a></article>)}</div>;
 }
-export function Articles() {
-  return <div className="cards articles">{posts.map(post => <article key={post.slug}><div className="label">{post.category}</div><h3>{post.title}</h3><p>{post.intro}</p><Link className="link" href={`/journal/${post.slug}`}>อ่านบทความ ↗</Link></article>)}</div>;
+export async function Articles() {
+  const posts=await getArticles();
+  if(!posts.length)return <p className="muted">กำลังเตรียมบทความดี ๆ สำหรับเพื่อนตัวโปรดของคุณ</p>;
+  return <div className="cards articles">{posts.map(post => <article key={post._id}>{post.coverUrl && <Link href={`/journal/${post.slug}`} tabIndex={-1} aria-hidden="true"><img className="article-card-image" src={post.coverUrl} alt={post.coverAlt||''} loading="lazy"/></Link>}<div className="label">{post.category}</div><h3>{post.title}</h3><p>{post.intro}</p><Link className="link" href={`/journal/${post.slug}`}>อ่านบทความ ↗</Link></article>)}</div>;
 }
 export function Footer() {
   return <footer><div className="wrap"><div className="footer-grid"><div><Link className="logo footer-logo" href="/">PAMA<small>GROOMING & CARE</small></Link><p className="footer-description">ดูแลด้วยใจ ให้ทุกวันของน้องเป็นวันที่ดี<br/>อาบน้ำ · ตัดขน · ฝากเลี้ยง สุนัขและแมว</p></div><div><h4>สำรวจ PAMA</h4><Link href="/services">บริการและราคา</Link><Link href="/branches">สาขาของเรา</Link><Link href="/gallery">ผลงานของเรา</Link><Link href="/journal">สาระน่ารู้</Link></div>{branches.map(branch => <div key={branch.name}><h4>{branch.name}</h4><a href={`tel:${branch.phone}`}>{branch.display}</a><a href={branch.url} target="_blank" rel="noopener noreferrer">LINE {branch.line}</a><a href={branch.fb} target="_blank" rel="noopener noreferrer">Facebook ↗</a></div>)}</div><div className="footer-bottom"><span>© {new Date().getFullYear()} PAMA GROOMING. All rights reserved.</span><span>Made for little paws, with a lot of love. ♡</span></div></div></footer>;

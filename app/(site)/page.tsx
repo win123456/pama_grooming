@@ -5,6 +5,7 @@ import { Articles, BranchCards, CallToAction, Gallery, Reviews, SectionHeading, 
 import { images } from '@/lib/content';
 
 export const metadata: Metadata = {alternates:{canonical:'/'}};
+export const revalidate=60;
 
 export default function HomePage() {
   return <>

@@ -1,0 +1,30 @@
+import {defineArrayMember, defineField, defineType} from 'sanity';
+
+export const article = defineType({
+  name: 'article', title: 'บทความ', type: 'document',
+  groups: [{name:'content',title:'เนื้อหา',default:true},{name:'seo',title:'SEO'}],
+  fields: [
+    defineField({name:'title',title:'ชื่อบทความ',type:'string',group:'content',validation:rule=>rule.required().max(160)}),
+    defineField({name:'slug',title:'ลิงก์บทความ (URL)',type:'slug',group:'content',description:'ใช้ตัวอักษรภาษาอังกฤษตัวเล็ก ตัวเลข และขีดกลาง เช่น caring-for-cats',options:{source:'title',maxLength:96},validation:rule=>rule.required().custom(value => !value?.current || /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value.current) ? true : 'ใช้ภาษาอังกฤษตัวเล็ก ตัวเลข และขีดกลางเท่านั้น')}),
+    defineField({name:'category',title:'หมวดหมู่',type:'string',group:'content',initialValue:'PET CARE',validation:rule=>rule.required().max(80)}),
+    defineField({name:'intro',title:'คำโปรย',type:'text',rows:3,group:'content',validation:rule=>rule.required().max(300)}),
+    defineField({name:'cover',title:'ภาพปก',type:'image',group:'content',options:{hotspot:true},fields:[defineField({name:'alt',title:'คำอธิบายภาพ',type:'string',validation:rule=>rule.required()})]}),
+    defineField({name:'body',title:'เนื้อหาบทความ',type:'array',group:'content',of:[
+      defineArrayMember({type:'block',styles:[{title:'เนื้อหา',value:'normal'},{title:'หัวข้อ',value:'h2'},{title:'หัวข้อย่อย',value:'h3'},{title:'ข้อความอ้างอิง',value:'blockquote'}],marks:{decorators:[{title:'ตัวหนา',value:'strong'},{title:'ตัวเอียง',value:'em'}],annotations:[{name:'link',title:'ลิงก์',type:'object',fields:[{name:'href',type:'url',title:'URL',validation:rule=>rule.uri({scheme:['http','https','mailto','tel']})}]}]}}),
+      defineArrayMember({type:'image',options:{hotspot:true},fields:[{name:'alt',title:'คำอธิบายภาพ',type:'string',validation:rule=>rule.required()},{name:'caption',title:'คำบรรยายใต้ภาพ',type:'string'}]}),
+    ],validation:rule=>rule.required().min(1)}),
+    defineField({name:'publishedAt',title:'วันที่แสดงในบทความ',type:'datetime',group:'content',description:'ใช้เรียงลำดับบทความ ปุ่ม Publish จะเผยแพร่ทันที ไม่ใช่การตั้งเวลา',initialValue:()=>new Date().toISOString(),validation:rule=>rule.required()}),
+    defineField({name:'seoTitle',title:'ชื่อสำหรับ Google',type:'string',group:'seo',description:'หากเว้นว่างจะใช้ชื่อบทความ',validation:rule=>rule.max(160)}),
+    defineField({name:'seoDescription',title:'คำอธิบายสำหรับ Google',type:'text',rows:3,group:'seo',description:'หากเว้นว่างจะใช้คำโปรย',validation:rule=>rule.max(300)}),
+  ],
+  preview:{select:{title:'title',subtitle:'category',media:'cover'}},
+});
+
+export const journalSettings = defineType({
+  name:'journalSettings',title:'ตั้งค่าหน้าบทความ',type:'document',
+  fields:[
+    defineField({name:'legacyImported',title:'นำเข้าบทความเดิมแล้ว',type:'boolean',hidden:true,readOnly:true}),
+    defineField({name:'title',title:'หัวข้อหน้าสาระน่ารู้',type:'string',initialValue:'สาระน่ารู้',validation:rule=>rule.required().max(100)}),
+    defineField({name:'description',title:'คำอธิบายหน้าสาระน่ารู้',type:'text',rows:3,initialValue:'แนวทางเตรียมตัวและกิจวัตรง่าย ๆ สำหรับเจ้าของสัตว์เลี้ยง',validation:rule=>rule.required().max(300)}),
+  ],
+});

@@ -47,3 +47,29 @@ Import repository `win123456/pama_grooming` ใน Vercel เลือก Framew
 ภาพ Unsplash เป็นภาพประกอบ ไม่ใช่ผลงานของร้าน แผนที่เป็นผลการค้นหา ต้องยืนยันหมุดกับสาขาก่อนเดินทาง เว็บไซต์ไม่มีรีวิวหรือคะแนนสมมติ
 
 ปุ่มจองเปิด LINE ของสาขาที่เลือก คิวสมบูรณ์เมื่อร้านยืนยันในแชต ไม่มีการยืนยันคิวอัตโนมัติ
+
+## จัดการบทความด้วย Sanity
+
+เปิด `/admin` และเข้าสู่ระบบด้วยบัญชี Google หรือ GitHub ที่เชื่อมกับ Sanity และมีสิทธิ์ในโปรเจกต์ PAMA
+
+เมนูแอดมิน:
+
+- **บทความทั้งหมด**: สร้าง/แก้ไขชื่อ URL หมวดหมู่ คำโปรย รูปปก เนื้อหาและรูปในบทความ พร้อม SEO
+- **ตั้งค่าหน้าสาระน่ารู้**: แก้ไขชื่อและคำอธิบายหน้ารวมบทความ
+- **นำเข้าบทความเดิม**: ย้ายบทความเดิม 3 เรื่องเข้า CMS แบบ transaction และไม่ทับรายการที่มีอยู่
+
+กด Publish เพื่อเผยแพร่ หรือ Unpublish เพื่อนำออกจากเว็บ การเปลี่ยนแปลงจะแสดงบนหน้าเว็บภายในประมาณ 60 วินาทีและคำขอถัดไป โดยไม่ต้อง deploy ใหม่ ลิงก์บทความอยู่ที่ `/journal/<slug>` และ sitemap เพิ่มบทความที่เผยแพร่แล้วโดยอัตโนมัติ
+
+บทความเดิมยังแสดงจากข้อมูลเว็บไซต์ก่อนย้ายจนกว่าการนำเข้าสำเร็จ หลังนำเข้าสำเร็จเว็บไซต์ใช้ Sanity เป็นแหล่งบทความทั้งหมด การลบหรือ Unpublish จะไม่ทำให้บทความเดิมกลับมาอีก
+
+บัญชีที่สร้างผ่าน Vercel ต้องเพิ่มวิธีลงชื่อเข้าใช้ Google หรือ GitHub ที่ https://www.sanity.io/manage/personal/account-settings ก่อนใช้ Studio
+
+Sanity resource: `pama-grooming-content`; project ID `qy3j9yrr`; dataset `production` (public identifiers)
+
+Production และ Preview เชื่อม environment variables จาก Vercel Marketplace แล้ว ตัวแปรที่ Studio ใช้คือ `NEXT_PUBLIC_SANITY_PROJECT_ID` และ `NEXT_PUBLIC_SANITY_DATASET` ตัวแปร public เป็นเพียง ID ไม่มี API token อยู่ใน client code
+
+Public website ใช้ Sanity published perspective ไม่ใช้ write token สิทธิ์การแก้ไขบังคับโดย Sanity login / project membership ฝั่ง backend ทั้ง `/admin` และหน้าข้างในตั้ง noindex และ robots.txt ไม่รวม admin ใน sitemap
+
+CORS ของ Studio ต้องอนุญาต origin ของเว็บพร้อม Allow credentials (ตั้งเฉพาะ `https://pama-grooming.vercel.app` แล้ว) หากต้องทดสอบ Studio บน localhost ให้เพิ่ม origin ของ dev server ใน Sanity API → CORS origins อย่างเจาะจง
+
+Source content/config: `sanity/schema.ts`, `sanity.config.ts`, `lib/articles.ts`, `app/(site)/journal/[slug]/page.tsx`
