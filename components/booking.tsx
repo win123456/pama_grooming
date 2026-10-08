@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useRef, type ReactNode } from 'react';
-import { branches } from '@/lib/content';
+import type {Branch} from '@/lib/cms-defaults';
 import {ArrowUpRight,MapPin,MessageCircle,X} from 'lucide-react';
 import {Button} from '@/components/ui/button';
 
@@ -12,7 +12,7 @@ export function BookingButton({ className = '' }: {className?: string}) {
   return <Button type="button" className={`booking-button ${className}`} onClick={() => open?.()}><MessageCircle aria-hidden="true"/><span>จองคิวผ่าน LINE</span><ArrowUpRight className="action-arrow" aria-hidden="true"/></Button>;
 }
 
-export function BookingProvider({children}: {children: ReactNode}) {
+export function BookingProvider({children,branches}: {children: ReactNode;branches:Branch[]}) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => () => document.body.classList.remove('locked'), []);
   function open() {ref.current?.showModal(); document.body.classList.add('locked');}

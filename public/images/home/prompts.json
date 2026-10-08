@@ -1,0 +1,26 @@
+{
+  "generator": "Built-in ImageGen",
+  "sharedPrompt": "Landscape editorial photograph illustration for the home page. Natural lighting, comfortable animals, centered crop-safe subject. No text, logos or watermark.",
+  "images": [
+    {
+      "file": "groom-service.webp",
+      "prompt": "A calm white bichon frise standing on a non-slip professional grooming table while a groomer carefully shapes fur along its torso with a comb and rounded grooming scissors, no scissors near face. Sage and cream pet salon, medium wide view."
+    },
+    {
+      "file": "boarding-service.webp",
+      "prompt": "A relaxed tricolor beagle lying comfortably in a clean spacious cozy indoor pet boarding room on a beige bed, its own bowl and toy nearby. Bright daylight, sand and warm wood tones."
+    },
+    {
+      "file": "gallery-dog.webp",
+      "prompt": "A cheerful corgi sitting on a dusty rose studio background, small paws and whole body visible, distinctive happy pet portrait."
+    },
+    {
+      "file": "gallery-cat.webp",
+      "prompt": "A black and white tuxedo cat resting on a sky blue cushion, looking gently toward camera, whole body visible, fresh blue studio background."
+    },
+    {
+      "file": "gallery-puppy.webp",
+      "prompt": "A small silky brown Yorkshire terrier with a neat coat sitting on a pale yellow studio background, full body wide portrait, ears upright."
+    }
+  ]
+}

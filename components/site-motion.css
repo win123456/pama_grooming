@@ -1,0 +1,19 @@
+.site-scroll-progress{position:fixed;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#244e43,#a8c8b5);transform:scaleX(0);transform-origin:left;z-index:30;pointer-events:none}
+header #navigation a{position:relative;transition:color .2s,background .2s}
+header #navigation a::after{content:'';position:absolute;left:0;right:0;bottom:-5px;height:2px;background:var(--green);transform:scaleX(0);transform-origin:left;transition:transform .25s}
+header #navigation a:hover::after{transform:scaleX(1)}
+.service,.branch,.reviewbox,.journal-card{transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s,border-color .3s}
+.service{overflow:hidden}.service img,.gallery img{transition:transform .6s cubic-bezier(.22,1,.36,1)}
+.gallery figure{overflow:hidden;border-radius:10px}
+.link,.journal-read{transition:color .2s,border-color .2s,gap .25s}.journal-read:hover{gap:22px}
+[data-slot="button"]:active{transform:scale(.97)}
+.hero .float{animation:pama-float-in .9s cubic-bezier(.22,1,.36,1) both;animation-delay:.25s}
+.hero .stamp{transition:transform .4s}.hero .stamp:hover{transform:rotate(0deg) scale(1.04)}
+.hero-heart{display:inline-block;transition:transform .35s}.hero-heart:hover{transform:rotate(-12deg) scale(1.15)}
+dialog[open]{animation:pama-dialog-in .3s cubic-bezier(.22,1,.36,1)}dialog[open]::backdrop{animation:pama-backdrop-in .25s ease}
+@keyframes pama-float-in{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pama-dialog-in{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes pama-backdrop-in{from{opacity:0}to{opacity:1}}
+@media(hover:hover) and (pointer:fine){.service:hover,.branch:hover,.reviewbox:hover,.journal-card:hover{transform:translateY(-6px);border-color:#7da18a;box-shadow:0 16px 35px #244e4312}.service:hover img,.gallery figure:hover img{transform:scale(1.035)}}
+@media(max-width:760px){header #navigation{display:flex;visibility:hidden;opacity:0;pointer-events:none;transform:translateY(-10px);transition:opacity .22s,transform .22s,visibility .22s}header #navigation.open{visibility:visible;opacity:1;pointer-events:auto;transform:translateY(0)}header #navigation a::after{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.site-scroll-progress{display:none}header #navigation,header #navigation a,header #navigation a::after,.service,.branch,.reviewbox,.journal-card,.service img,.gallery img,.link,.journal-read,.hero .stamp,.hero-heart{transition:none}.hero .float,dialog[open],dialog[open]::backdrop{animation:none}.service:hover,.branch:hover,.reviewbox:hover,.journal-card:hover,.service:hover img,.gallery figure:hover img,.hero .stamp:hover,.hero-heart:hover,[data-slot="button"]:active{transform:none}}

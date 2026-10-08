@@ -1,0 +1,38 @@
+{
+  "generator": "Built-in ImageGen",
+  "sharedPrompt": "Natural editorial landscape photo illustration for a Thai pet care blog. Comfortable animal handling, middle crop-safe subjects, no text, logo or watermark.",
+  "images": [
+    {
+      "file": "dog-bathing-and-grooming.webp",
+      "prompt": "A relaxed small cream poodle standing in a shallow white pet bathtub, a groomer's hands gently washing its back, subtle soap suds, sage green tiled background. Clearly a safe bathing scene, no water on face."
+    },
+    {
+      "file": "cat-bathing-and-coat-care.webp",
+      "prompt": "A grey British shorthair cat comfortably sitting on a pale lavender towel while a hand gently brushes its back with a soft pet brush. Calm cat, lilac background, medium side view."
+    },
+    {
+      "file": "pet-skin-and-coat-health.webp",
+      "prompt": "Close up of the back and fluffy coat of a red shiba inu being gently parted by a caretaker's hands for checking healthy skin, wooden grooming brush alongside. Warm peach background, healthy animal no wounds."
+    },
+    {
+      "file": "seasonal-pet-care.webp",
+      "prompt": "A cheerful black and white border collie resting in shaded green garden beside a clean water bowl, soft summer sunlight and foliage in the background. Outdoor wide composition, fresh mint colors."
+    },
+    {
+      "file": "dog-and-cat-care-faq.webp",
+      "prompt": "A ginger kitten and a brown dachshund sitting together facing the camera on a butter yellow background, affectionate curious expressions. Distinct two-pet editorial portrait."
+    },
+    {
+      "file": "choosing-pet-grooming-service.webp",
+      "prompt": "A neat apricot toy poodle sitting calmly on a nonslip grooming table, a human hand holding a comb beside it, tidy cream pet care studio in background. Elegant uncluttered side profile, sand colors."
+    },
+    {
+      "file": "coat-routine.webp",
+      "prompt": "A fluffy white long-haired dog lying comfortably on a blue blanket while an owner gently brushes the coat, clean home setting, sky blue color palette, wide lifestyle photography."
+    },
+    {
+      "file": "boarding-checklist.webp",
+      "prompt": "A chocolate labrador resting on a cushioned dog bed beside a packed canvas travel bag, leash and bowl in a welcoming bright pet boarding room. Soft terracotta palette, wide lifestyle composition."
+    }
+  ]
+}
