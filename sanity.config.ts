@@ -9,7 +9,7 @@ export default defineConfig({
   name:'pama',title:'PAMA GROOMING — จัดการบทความ',basePath:'/admin',projectId,dataset,
   plugins:[structureTool({title:'จัดการเนื้อหา',structure:S=>S.list().title('PAMA GROOMING').items([
     S.documentTypeListItem('article').title('บทความทั้งหมด'),
-    S.listItem().title('ตั้งค่าหน้าสาระน่ารู้').child(S.document().schemaType('journalSettings').documentId('pama-journal-settings')),
+    S.listItem().id('journal-settings').title('ตั้งค่าหน้าสาระน่ารู้').child(S.document().schemaType('journalSettings').documentId('pama-journal-settings')),
   ])})],
   tools:tools=>[...tools,{name:'import-existing',title:'นำเข้าบทความเดิม',component:ImportExistingArticles}],
   schema:{types:[article,journalSettings]},
