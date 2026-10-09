@@ -6,7 +6,7 @@ import {apiVersion} from './env';
 import {researchedArticles,seedDocument} from './researched-articles';
 import {defaultContact,defaultGallery,defaultServices} from '@/lib/cms-defaults';
 import {articleCover} from '@/lib/article-images';
-import {examplePrice} from '@/lib/example-prices';
+import {confirmedPrices,confirmedPriceNote,defaultHomeFaqs} from '@/lib/service-rates';
 import type {Price} from '@/lib/cms-defaults';
 
 type Existing={_id:string;title:string;slug?:string};
@@ -21,15 +21,15 @@ export function ImportExistingArticles() {
   const alreadyExists=(seed:typeof researchedArticles[number],records:Existing[])=>records.some(record=>record.slug===seed.slug||record._id.replace(/^drafts\./,'')===`pama-article-${seed.slug}`||normalize(record.title)===normalize(seed.title));
   const fetchExisting=()=>client.fetch<Existing[]>('*[_type == "article"]{_id,title,"slug":slug.current}');
   useEffect(()=>{let active=true;client.fetch<Existing[]>('*[_type == "article"]{_id,title,"slug":slug.current}').then(records=>{if(active)setExisting(records)}).catch(()=>{if(active)setLoadError(true)});return()=>{active=false}},[client]);
-  async function fillExamplePrices() {
-    setBusy(true);setStatus('กำลังเติมราคาตัวอย่าง…');
+  async function fillConfirmedPrices() {
+    setBusy(true);setStatus('กำลังนำเข้าราคาจากใบค่าบริการ…');
     try {
       const docs=await client.fetch<{_id:string;_rev:string;prices?:Price[]}[]>('*[_id in ["pama-service-settings","drafts.pama-service-settings"]]{_id,_rev,prices}');
       const doc=docs.find(d=>d._id.startsWith('drafts.'))||docs[0];
       if(!doc){setStatus('กรุณานำเข้าข้อมูลเว็บไซต์ก่อน');return;}
-      const prices=(doc.prices||[]).map(examplePrice);
-      await client.patch(doc._id).ifRevisionId(doc._rev).set({prices}).commit();
-      setStatus(doc._id.startsWith('drafts.')?'เติมราคาตัวอย่างในฉบับร่างแล้ว เปิดบริการและราคา แล้วกด Publish':'เติมราคาตัวอย่างแล้ว เปิดบริการและราคาเพื่อแก้ไขต่อได้ ข้ามราคาที่กรอกเอง');
+      const prices=confirmedPrices;
+      await client.patch(doc._id).ifRevisionId(doc._rev).set({prices,priceNote:confirmedPriceNote,ratesImported:true}).setIfMissing({homeFaqs:defaultHomeFaqs}).commit();
+      setStatus(doc._id.startsWith('drafts.')?'นำเข้าราคาในฉบับร่างแล้ว เปิดบริการและราคา แล้วกด Publish':'นำเข้าราคาตามใบค่าบริการและ FAQ แล้ว เปิดบริการและราคาเพื่อแก้ไขต่อได้');
     }catch{setStatus('เติมราคาไม่สำเร็จ อาจมีข้อมูลเปลี่ยนระหว่างแก้ไข กรุณาลองใหม่');}finally{setBusy(false);}
   }
   async function initializeWebsite() {
@@ -84,7 +84,7 @@ export function ImportExistingArticles() {
     <p>ย้ายข้อมูลปัจจุบันของสาระน่ารู้ ผลงาน Before & After บริการและราคา และข้อมูลติดต่อ เพื่อให้แก้ไขในหลังบ้านได้ทั้งหมด ข้ามข้อมูลที่มีอยู่แล้วรวมทั้งฉบับร่าง</p>
     <button onClick={initializeWebsite} disabled={busy||!existing} style={buttonStyle}>นำเข้าและเผยแพร่ข้อมูลเดิมทั้ง 4 ส่วน</button>
     <p role="status">{status}</p>
-    <h2>ราคาตัวอย่าง</h2><p>เติมตัวเลขสำหรับรายการที่ยังเป็น “สอบถามสาขาผ่าน LINE” โดยไม่ทับราคาที่กรอกเอง แก้ราคาจริงได้ในเมนูบริการและราคา แล้วปิดสถานะ “เป็นราคาตัวอย่าง”</p><button onClick={fillExamplePrices} disabled={busy} style={buttonStyle}>เติมราคาตัวอย่างลงหลังบ้าน</button>
+    <h2>ค่าบริการและ FAQ</h2><p>ใช้ราคาตามใบค่าบริการที่ร้านให้มา ทั้งสองสาขา แยกน้ำหนักและประเภทขน ปุ่มนี้จะแทนที่รายการราคาเดิม และเพิ่ม FAQ หน้าแรก 6 ข้อหากยังไม่มี หากมีฉบับร่าง จะอัปเดตฉบับร่างให้ตรวจและ Publish</p><button onClick={fillConfirmedPrices} disabled={busy} style={buttonStyle}>นำเข้าค่าบริการจริงและ FAQ หน้าแรก</button>
     <h2>บทความตัวอย่าง</h2>
     <p>เตรียมบทความใหม่ 6 เรื่องพร้อมภาพประกอบและแหล่งอ้างอิง ปุ่มนำเข้าจะเผยแพร่เฉพาะเรื่องที่ยังไม่มี โดยไม่ทับชื่อ รูป หรือเนื้อหาที่คุณเคยแก้</p>
     <p>ข้ามเรื่องเตรียมตัวก่อนอาบน้ำตัดขนและกิจวัตรดูแลขนที่มีอยู่แล้ว หัวข้อแนะนำหน้ารวมกับบทความล่าสุดใช้บนหน้ารวมต่อไป</p>

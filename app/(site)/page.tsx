@@ -1,3 +1,4 @@
+import {HomeFaq} from '@/components/home-faq';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { BookingButton } from '@/components/booking';
@@ -18,6 +19,6 @@ export default function HomePage() {
     <section className="wrap section"><SectionHeading eyebrow="FIND YOUR PAMA" title="ใกล้บ้านคุณ ใกล้ใจน้อง"><p>เลือกสาขาที่สะดวก แล้วให้เราเป็นส่วนหนึ่ง<br/>ของวันดี ๆ ของเพื่อนตัวเล็ก</p></SectionHeading><BranchCards/></section>
     <section className="wrap section section-no-top"><SectionHeading eyebrow="OUR LITTLE FRIENDS" title="ความน่ารักที่อยากแบ่งปัน"><Link className="link" href="/gallery">ชมผลงานของเรา ↗</Link></SectionHeading><Gallery/></section>
     <section className="soft section"><div className="wrap"><SectionHeading eyebrow="FROM OUR CUSTOMERS" title="เสียงจากครอบครัวของน้อง"><Link className="link" href="/reviews">ดูช่องทางรีวิว ↗</Link></SectionHeading><Reviews/></div></section>
-    <section className="wrap section"><SectionHeading eyebrow="THE PAMA JOURNAL" title="เรื่องเล็ก ๆ เพื่อการดูแลที่ดี"><Link className="link" href="/journal">อ่านสาระน่ารู้ ↗</Link></SectionHeading><Articles/></section><CallToAction/>
+    <section className="wrap section"><SectionHeading eyebrow="THE PAMA JOURNAL" title="เรื่องเล็ก ๆ เพื่อการดูแลที่ดี"><Link className="link" href="/journal">อ่านสาระน่ารู้ ↗</Link></SectionHeading><Articles/></section><HomeFaq/><CallToAction/>
   </>;
 }
