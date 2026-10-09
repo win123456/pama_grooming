@@ -83,3 +83,5 @@ dialog .close { width: 36px; height: 36px; border-radius: 50%; background: #244e
 .service > a { display:block; flex-shrink:0; }
 .service .body { display:flex; flex-direction:column; flex:1; }
 .service .row { margin-top:auto; }
+.booking-text-link { display:inline; padding:0; border:0; background:none; color:var(--green); font:inherit; font-weight:600; text-decoration:underline; text-underline-offset:4px; cursor:pointer; }
+.booking-text-link:hover { color:#183b32; }

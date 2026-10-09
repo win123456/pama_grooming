@@ -13,6 +13,11 @@ export function BookingButton({ className = '' }: {className?: string}) {
   return <Button type="button" className={`booking-button ${className}`} onClick={() => open?.()}><MessageCircle aria-hidden="true"/><span>จองคิวผ่าน LINE</span><ArrowUpRight className="action-arrow" aria-hidden="true"/></Button>;
 }
 
+export function BookingTextLink({children}:{children:ReactNode}) {
+  const open=useContext(BookingContext);
+  return <button type="button" className="booking-text-link" onClick={()=>open?.()}>{children}</button>;
+}
+
 export function BookingProvider({children,branches}: {children: ReactNode;branches:Branch[]}) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => () => document.body.classList.remove('locked'), []);
