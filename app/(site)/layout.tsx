@@ -1,3 +1,4 @@
+import {GoogleAnalytics} from '@/components/google-analytics';
 import type {ReactNode} from 'react';
 import './globals.css';
 import './ui.css';
@@ -12,5 +13,5 @@ import {getContact} from '@/lib/site-content';
 
 export default async function SiteLayout({children}:{children:ReactNode}) {
   const {branches}=await getContact();
-  return <><a className="skip-link" href="#main-content">ข้ามไปเนื้อหา</a><BookingProvider branches={branches}><SiteMotion/><BackToTop/><Header/><main id="main-content">{children}</main><Footer/></BookingProvider></>;
+  return <><a className="skip-link" href="#main-content">ข้ามไปเนื้อหา</a><BookingProvider branches={branches}><GoogleAnalytics/><SiteMotion/><BackToTop/><Header/><main id="main-content">{children}</main><Footer/></BookingProvider></>;
 }
