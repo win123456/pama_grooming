@@ -21,6 +21,16 @@ export function ImportExistingArticles() {
   const alreadyExists=(seed:typeof researchedArticles[number],records:Existing[])=>records.some(record=>record.slug===seed.slug||record._id.replace(/^drafts\./,'')===`pama-article-${seed.slug}`||normalize(record.title)===normalize(seed.title));
   const fetchExisting=()=>client.fetch<Existing[]>('*[_type == "article"]{_id,title,"slug":slug.current}');
   useEffect(()=>{let active=true;client.fetch<Existing[]>('*[_type == "article"]{_id,title,"slug":slug.current}').then(records=>{if(active)setExisting(records)}).catch(()=>{if(active)setLoadError(true)});return()=>{active=false}},[client]);
+  async function updateHomeFaqs() {
+    setBusy(true);setStatus('กำลังอัปเดต FAQ หน้าแรก…');
+    try {
+      const docs=await client.fetch<{_id:string;_rev:string}[]>('*[_id in ["pama-service-settings","drafts.pama-service-settings"]]{_id,_rev}');
+      const doc=docs.find(d=>d._id.startsWith('drafts.'))||docs[0];
+      if(!doc){setStatus('กรุณานำเข้าข้อมูลเว็บไซต์ก่อน');return;}
+      await client.patch(doc._id).ifRevisionId(doc._rev).set({homeFaqs:defaultHomeFaqs}).commit();
+      setStatus(doc._id.startsWith('drafts.')?'ใส่ FAQ 8 ข้อในฉบับร่างแล้ว เปิดบริการและราคา แล้วกด Publish':'อัปเดต FAQ หน้าแรกเป็น 8 ข้อแล้ว แก้ต่อได้ในบริการและราคา');
+    }catch{setStatus('อัปเดตไม่สำเร็จ กรุณาตรวจสิทธิ์และลองอีกครั้ง');}finally{setBusy(false);}
+  }
   async function fillConfirmedPrices() {
     setBusy(true);setStatus('กำลังนำเข้าราคาจากใบค่าบริการ…');
     try {
@@ -84,7 +94,7 @@ export function ImportExistingArticles() {
     <p>ย้ายข้อมูลปัจจุบันของสาระน่ารู้ ผลงาน Before & After บริการและราคา และข้อมูลติดต่อ เพื่อให้แก้ไขในหลังบ้านได้ทั้งหมด ข้ามข้อมูลที่มีอยู่แล้วรวมทั้งฉบับร่าง</p>
     <button onClick={initializeWebsite} disabled={busy||!existing} style={buttonStyle}>นำเข้าและเผยแพร่ข้อมูลเดิมทั้ง 4 ส่วน</button>
     <p role="status">{status}</p>
-    <h2>ค่าบริการและ FAQ</h2><p>ใช้ราคาตามใบค่าบริการที่ร้านให้มา ทั้งสองสาขา แยกน้ำหนักและประเภทขน ปุ่มนี้จะแทนที่รายการราคาเดิม และเพิ่ม FAQ หน้าแรก 6 ข้อหากยังไม่มี หากมีฉบับร่าง จะอัปเดตฉบับร่างให้ตรวจและ Publish</p><button onClick={fillConfirmedPrices} disabled={busy} style={buttonStyle}>นำเข้าค่าบริการจริงและ FAQ หน้าแรก</button>
+    <h2>FAQ หน้าแรก 8 ข้อ</h2><p>แทนคำถามหน้าแรกด้วยข้อความชุดล่าสุดที่ร้านให้มา โดยไม่เปลี่ยนรายการราคา</p><button onClick={updateHomeFaqs} disabled={busy} style={buttonStyle}>ใช้ FAQ หน้าแรกชุดใหม่ 8 ข้อ</button><h2>ค่าบริการและ FAQ</h2><p>ใช้ราคาตามใบค่าบริการที่ร้านให้มา ทั้งสองสาขา แยกน้ำหนักและประเภทขน ปุ่มนี้จะแทนที่รายการราคาเดิม และเพิ่ม FAQ หน้าแรก 8 ข้อหากยังไม่มี หากมีฉบับร่าง จะอัปเดตฉบับร่างให้ตรวจและ Publish</p><button onClick={fillConfirmedPrices} disabled={busy} style={buttonStyle}>นำเข้าค่าบริการจริงและ FAQ หน้าแรก</button>
     <h2>บทความตัวอย่าง</h2>
     <p>เตรียมบทความใหม่ 6 เรื่องพร้อมภาพประกอบและแหล่งอ้างอิง ปุ่มนำเข้าจะเผยแพร่เฉพาะเรื่องที่ยังไม่มี โดยไม่ทับชื่อ รูป หรือเนื้อหาที่คุณเคยแก้</p>
     <p>ข้ามเรื่องเตรียมตัวก่อนอาบน้ำตัดขนและกิจวัตรดูแลขนที่มีอยู่แล้ว หัวข้อแนะนำหน้ารวมกับบทความล่าสุดใช้บนหน้ารวมต่อไป</p>
