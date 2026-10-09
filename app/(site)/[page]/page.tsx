@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BranchCards, CallToAction, Gallery, PageTitle, Reviews, ServiceCards } from '@/components/sections';
 import { Prices } from '@/components/prices';
+import {ServiceFaq} from '@/components/service-faq';
 import { pageInfo } from '@/lib/content';
 import {getArticles,getJournalSettings} from '@/lib/articles';
 import {JournalPage} from '@/components/journal';
@@ -40,7 +41,7 @@ export default async function ContentPage({params,searchParams}:Props) {
   if(page === 'journal') { const {pg} = await searchParams; return <JournalPage title={info.title} description={info.description} requestedPage={Array.isArray(pg)?pg[0]:pg}/>; }
   const pricing=page==='services'?await getServices():null;
   return <><PageTitle {...info}/><section className="wrap section page-section">
-    {page === 'services' && <>{pricing && <Prices prices={pricing.prices} note={pricing.priceNote}/>}{!!pricing?.faqs.length && <div className="faq"><h3>ก่อนจองบริการ</h3>{pricing.faqs.map((faq,i)=><details key={faq._key} open={i===0}><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div>}</>}
+    {page === 'services' && <>{pricing && <Prices prices={pricing.prices} note={pricing.priceNote}/>}{!!pricing?.faqs.length && <ServiceFaq items={pricing.faqs}/>}</>}
     {(page === 'branches' || page === 'contact') && <BranchCards maps/>}
     {page === 'gallery' && <Gallery/>}
     {page === 'reviews' && <Reviews/>}
