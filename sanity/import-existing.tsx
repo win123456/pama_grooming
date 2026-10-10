@@ -1,4 +1,5 @@
 'use client';
+import {homeSeed} from '@/lib/home-content';
 import {useEffect,useState,useMemo} from 'react';
 import {useClient} from 'sanity';
 import {posts} from '@/lib/content';
@@ -46,16 +47,16 @@ export function ImportExistingArticles() {
     setBusy(true);setStatus('กำลังนำข้อมูลเว็บไซต์เดิมเข้า Sanity…');
     try {
       const records=await fetchExisting();
-      const ids=await client.fetch<string[]>('*[_type in ["serviceSettings","gallerySettings","contactSettings","journalSettings"]]._id');
+      const ids=await client.fetch<string[]>('*[_type in ["homeSettings","serviceSettings","gallerySettings","contactSettings","journalSettings"]]._id');
       let transaction=client.transaction();
-      const settings=[defaultContact,defaultGallery,{...defaultServices,services:defaultServices.services.map(({image,...item})=>({...item,imageUrl:image}))}];
+      const settings=[homeSeed,defaultContact,defaultGallery,{...defaultServices,services:defaultServices.services.map(({image,...item})=>({...item,imageUrl:image}))}];
       for(const doc of settings) if(!ids.includes(doc._id)&&!ids.includes('drafts.'+doc._id))transaction=transaction.createIfNotExists<Record<string,unknown> & {_id:string;_type:string}>(doc);
       const publishedAt=new Date().toISOString();
       for(const seed of researchedArticles)if(!alreadyExists(seed,records))transaction=transaction.createIfNotExists(seedDocument(seed,publishedAt));
       for(const post of posts)if(!records.some(r=>r.slug===post.slug||r._id.replace(/^drafts\./,'')==='pama-article-'+post.slug))transaction=transaction.createIfNotExists({_id:'pama-article-'+post.slug,_type:'article',title:post.title,slug:{_type:'slug',current:post.slug},category:post.category,intro:post.intro,coverUrl:articleCover(post.slug),coverAlt:post.title,publishedAt,body:post.paragraphs.map((text,i)=>({_key:'paragraph-'+i,_type:'block',style:'normal',markDefs:[],children:[{_key:'span-'+i,_type:'span',text,marks:[]}]}))});
       if(!ids.includes('drafts.pama-journal-settings'))transaction=transaction.createIfNotExists({_id:'pama-journal-settings',_type:'journalSettings',title:'สาระน่ารู้เกี่ยวกับสุนัขและแมว',description:'แนวทางเตรียมตัวและกิจวัตรง่าย ๆ สำหรับเจ้าของสัตว์เลี้ยง'}).patch('pama-journal-settings',{set:{legacyImported:true,researchedImported:true}});
       await transaction.commit();setExisting(await fetchExisting());
-      setStatus('นำเข้าเรียบร้อย เปิดเมนูจัดการเนื้อหาเพื่อแก้ทั้ง 4 ส่วนได้ ไม่ทับรายการที่มีอยู่หรือฉบับร่าง กด Publish หลังแก้ไข เว็บไซต์อัปเดตภายในประมาณ 1 นาที');
+      setStatus('นำเข้าเรียบร้อย เปิดเมนูจัดการเนื้อหาเพื่อแก้ทั้ง 5 ส่วนได้ ไม่ทับรายการที่มีอยู่หรือฉบับร่าง กด Publish หลังแก้ไข เว็บไซต์อัปเดตภายในประมาณ 1 นาที');
     }catch{setStatus('นำเข้าไม่สำเร็จ กรุณาล็อกอิน Sanity ด้วยบัญชีที่มีสิทธิ์แก้ไข แล้วลองอีกครั้ง');}finally{setBusy(false);}
   }
   async function importResearched() {
@@ -91,7 +92,7 @@ export function ImportExistingArticles() {
   const buttonStyle={padding:'13px 24px',border:0,borderRadius:24,background:'#244E43',color:'white',cursor:busy?'wait':'pointer',fontSize:15};
   return <div style={{padding:'40px 24px',maxWidth:900,margin:'auto',fontFamily:'sans-serif',lineHeight:1.8}}>
     <h1 style={{fontSize:28}}>นำข้อมูลเว็บไซต์เข้า Sanity</h1>
-    <p>ย้ายข้อมูลปัจจุบันของสาระน่ารู้ ผลงาน Before & After บริการและราคา และข้อมูลติดต่อ เพื่อให้แก้ไขในหลังบ้านได้ทั้งหมด ข้ามข้อมูลที่มีอยู่แล้วรวมทั้งฉบับร่าง</p>
+    <p>ย้ายข้อมูลปัจจุบันของหน้าแรก สาระน่ารู้ ผลงาน Before & After บริการและราคา และข้อมูลติดต่อ เพื่อให้แก้ไขในหลังบ้านได้ทั้งหมด ข้ามข้อมูลที่มีอยู่แล้วรวมทั้งฉบับร่าง</p>
     <button onClick={initializeWebsite} disabled={busy||!existing} style={buttonStyle}>นำเข้าและเผยแพร่ข้อมูลเดิมทั้ง 4 ส่วน</button>
     <p role="status">{status}</p>
     <h2>FAQ หน้าแรก 8 ข้อ</h2><p>แทนคำถามหน้าแรกด้วยข้อความชุดล่าสุดที่ร้านให้มา โดยไม่เปลี่ยนรายการราคา</p><button onClick={updateHomeFaqs} disabled={busy} style={buttonStyle}>ใช้ FAQ หน้าแรกชุดใหม่ 8 ข้อ</button><h2>ค่าบริการและ FAQ</h2><p>ใช้ราคาตามใบค่าบริการที่ร้านให้มา ทั้งสองสาขา แยกน้ำหนักและประเภทขน ปุ่มนี้จะแทนที่รายการราคาเดิม และเพิ่ม FAQ หน้าแรก 8 ข้อหากยังไม่มี หากมีฉบับร่าง จะอัปเดตฉบับร่างให้ตรวจและ Publish</p><button onClick={fillConfirmedPrices} disabled={busy} style={buttonStyle}>นำเข้าค่าบริการจริงและ FAQ หน้าแรก</button>

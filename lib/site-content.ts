@@ -1,3 +1,4 @@
+import {defaultHome,type HomeContent} from './home-content';
 import {previousHomeFaqs} from './home-faqs';
 import 'server-only';
 import {confirmedPrices,confirmedPriceNote,defaultHomeFaqs} from './service-rates';
@@ -19,4 +20,9 @@ export const getServices=cache(async():Promise<Heading & {services:Service[];rat
 export const getGallery=cache(async():Promise<Heading & {works:Work[]}>=>{
  const doc=await client.fetch<(Heading & {works:Work[]})|null>('*[_type=="gallerySettings" && _id=="pama-gallery-settings"][0]{title,description,eyebrow,works[]{_key,breed,title,style,tone,illustration,"beforeUrl":coalesce(before.asset->url,beforeUrl),"afterUrl":coalesce(after.asset->url,afterUrl)}}',{},{next:{revalidate:60,tags:['site-content']}});
  return doc ? {...defaultGallery,...doc,works:doc.works||[]} : defaultGallery;
+});
+
+export const getHome=cache(async():Promise<HomeContent>=>{
+ const doc=await client.fetch<Partial<HomeContent>|null>('*[_type=="homeSettings" && _id=="pama-home-settings"][0]{...,"heroImageUrl":coalesce(heroImage.asset->url,heroImageUrl),"storyImageUrl":coalesce(storyImage.asset->url,storyImageUrl)}',{},{next:{revalidate:60,tags:['site-content']}});
+ return Object.fromEntries(Object.entries(defaultHome).map(([key,value])=>[key,doc?.[key as keyof HomeContent]??value])) as HomeContent;
 });

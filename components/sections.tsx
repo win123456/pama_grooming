@@ -37,8 +37,8 @@ export async function ServiceCards() {
     <div className="body"><Badge variant="secondary" className="num">{service.number} / {service.label}</Badge><h3>{service.title}</h3><p>{service.description}</p>{service.title.includes('ฝากเลี้ยง') && <p className="service-branch-note">บริการนี้เฉพาะสาขาพหลโยธิน 64</p>}<div className="row"><span>สอบถามราคาผ่าน LINE</span><Link className="link" href="/services">ดูรายละเอียด ↗</Link></div></div>
   </Card>)}</div>{imageNote && !imageNote.includes('ภาพประกอบ') && <p className="note">{imageNote}</p>}</>;
 }
-export function CallToAction() {
-  return <div className="wrap section"><div className="callout"><div><h2>นัดวันดูแล ให้เจ้าตัวโปรด</h2><p>เลือกสาขาที่สะดวก แล้วทัก LINE เพื่อสอบถามราคาและคิวว่าง</p></div><BookingButton/></div></div>;
+export function CallToAction({title='นัดวันดูแล ให้เจ้าตัวโปรด',description='เลือกสาขาที่สะดวก แล้วทัก LINE เพื่อสอบถามราคาและคิวว่าง'}:{title?:string;description?:string}={}) {
+  return <div className="wrap section"><div className="callout"><div><h2>{title}</h2><p>{description}</p></div><BookingButton/></div></div>;
 }
 export function Gallery() {
   return <WorkGallery/>;
