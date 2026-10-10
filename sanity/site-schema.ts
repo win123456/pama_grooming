@@ -1,7 +1,8 @@
+import {seoFields} from './seo-fields';
 import {WeightInput} from './weight-input';
 import {defineArrayMember,defineField,defineType} from 'sanity';
 import {defaultContact,defaultServices,defaultGallery} from '@/lib/cms-defaults';
-const heading=[defineField({name:'title',title:'หัวข้อหน้า',type:'string',validation:r=>r.required()}),defineField({name:'description',title:'คำอธิบายหน้า',type:'text',rows:3,validation:r=>r.required()}),defineField({name:'eyebrow',title:'ข้อความเล็กเหนือหัวข้อ',type:'string'})];
+const heading=[...seoFields,defineField({name:'title',title:'หัวข้อหน้า',type:'string',validation:r=>r.required()}),defineField({name:'description',title:'คำอธิบายหน้า',type:'text',rows:3,validation:r=>r.required()}),defineField({name:'eyebrow',title:'ข้อความเล็กเหนือหัวข้อ',type:'string'})];
 const url=(name:string,title:string,relative=false)=>defineField({name,title,type:'url',validation:r=>r.uri({scheme:['https'],allowRelative:relative})});
 const image=(name:string,title:string)=>defineField({name,title,type:'image',options:{hotspot:true},fields:[defineField({name:'alt',title:'คำอธิบายภาพ',type:'string'})]});
 export const serviceSeed={...defaultServices,services:defaultServices.services.map(({image,...s})=>({...s,imageUrl:image}))};

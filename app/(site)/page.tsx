@@ -3,14 +3,14 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { BookingButton } from '@/components/booking';
 import { Articles, BranchCards, CallToAction, Gallery, Reviews, SectionHeading, ServiceCards } from '@/components/sections';
-import {getHome} from '@/lib/site-content';
+import {getHome,getPageSeo} from '@/lib/site-content';
 import {Fragment} from 'react';
 function lines(text:string){return text.split('\n').map((line,i)=><Fragment key={i}>{i>0&&<br/>}{line}</Fragment>);}
 import {Button} from '@/components/ui/button';
 import {ArrowRight,PawPrint} from 'lucide-react';
 import {Badge} from '@/components/ui/badge';
 
-export const metadata: Metadata = {alternates:{canonical:'/'}};
+export async function generateMetadata():Promise<Metadata>{const seo=await getPageSeo('homeSettings','pama-home-settings');return {alternates:{canonical:'/'},...(seo.seoTitle?{title:{absolute:seo.seoTitle}}:{}),...(seo.seoDescription?{description:seo.seoDescription}:{}),...(seo.seoTitle||seo.seoDescription?{openGraph:{...(seo.seoTitle?{title:seo.seoTitle}:{}),...(seo.seoDescription?{description:seo.seoDescription}:{})}}:{})};}
 export const revalidate=60;
 
 export default async function HomePage() {

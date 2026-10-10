@@ -12,7 +12,7 @@ export async function generateStaticParams(){return (await getArticles()).map(po
 export async function generateMetadata({params}:Props):Promise<Metadata> {
   const {slug} = await params;const post = await getArticle(slug);
   if(!post) return {};
-  return {title:post.seoTitle||post.title, description:post.seoDescription||post.intro, alternates:{canonical:`/journal/${slug}`}, openGraph:{title:post.seoTitle||post.title,description:post.seoDescription||post.intro,type:'article',url:`/journal/${slug}`,...(post.publishedAt?{publishedTime:post.publishedAt}:{}),...(post.coverUrl?{images:[{url:post.coverUrl,alt:post.coverAlt||post.title}]}:{})}};
+  return {title:post.seoTitle?{absolute:post.seoTitle}:post.title, description:post.seoDescription||post.intro, alternates:{canonical:`/journal/${slug}`}, openGraph:{title:post.seoTitle||post.title,description:post.seoDescription||post.intro,type:'article',url:`/journal/${slug}`,...(post.publishedAt?{publishedTime:post.publishedAt}:{}),...(post.coverUrl?{images:[{url:post.coverUrl,alt:post.coverAlt||post.title}]}:{})}};
 }
 export default async function ArticlePage({params}:Props) {
   const {slug} = await params;const post = await getArticle(slug);

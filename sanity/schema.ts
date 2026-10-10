@@ -1,3 +1,5 @@
+import {SeoInput} from './seo-input';
+import {seoFields} from './seo-fields';
 import {defineArrayMember, defineField, defineType} from 'sanity';
 
 export const article = defineType({
@@ -18,8 +20,8 @@ export const article = defineType({
       defineArrayMember({type:'image',options:{hotspot:true},fields:[{name:'alt',title:'คำอธิบายภาพ',type:'string',validation:rule=>rule.required()},{name:'caption',title:'คำบรรยายใต้ภาพ',type:'string'}]}),
     ],validation:rule=>rule.required().min(1)}),
     defineField({name:'publishedAt',title:'วันที่แสดงในบทความ',type:'datetime',group:'content',description:'ใช้เรียงลำดับบทความ ปุ่ม Publish จะเผยแพร่ทันที ไม่ใช่การตั้งเวลา',initialValue:()=>new Date().toISOString(),validation:rule=>rule.required()}),
-    defineField({name:'seoTitle',title:'ชื่อสำหรับ Google',type:'string',group:'seo',description:'หากเว้นว่างจะใช้ชื่อบทความ',validation:rule=>rule.max(160)}),
-    defineField({name:'seoDescription',title:'คำอธิบายสำหรับ Google',type:'text',rows:3,group:'seo',description:'หากเว้นว่างจะใช้คำโปรย',validation:rule=>rule.max(300)}),
+    defineField({name:'seoTitle',title:'ชื่อแท็บ / ชื่อสำหรับ Google',type:'string',components:{input:SeoInput},group:'seo',description:'หากเว้นว่างจะใช้ชื่อบทความ',validation:rule=>rule.max(160)}),
+    defineField({name:'seoDescription',title:'คำอธิบายสำหรับ Google',type:'text',components:{input:SeoInput},rows:3,group:'seo',description:'หากเว้นว่างจะใช้คำโปรย',validation:rule=>rule.max(300)}),
   ],
   preview:{select:{title:'title',subtitle:'category',media:'cover'}},
 });
