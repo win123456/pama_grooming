@@ -1,3 +1,4 @@
+import {pageInfo} from './content';
 import {defaultHome,type HomeContent} from './home-content';
 import {previousHomeFaqs} from './home-faqs';
 import 'server-only';
@@ -30,3 +31,8 @@ export const getHome=cache(async():Promise<HomeContent>=>{
 export type PageSeo={seoTitle?:string;seoDescription?:string};
 export const getPageSeo=cache(async(type:string,id:string):Promise<PageSeo>=>await client.fetch<PageSeo|null>('*[_type==$type && _id==$id][0]{seoTitle,seoDescription}',{type,id},{next:{revalidate:60,tags:['site-content']}})??{});
 export const getWebsite=cache(async()=>await client.fetch<{metaPixels?:{_key:string;name:string;pixelId:string;enabled:boolean}[];siteTitle?:string;siteName?:string;siteDescription?:string;faviconUrl?:string;branchesSeo?:{title?:string;description?:string};reviewsSeo?:{title?:string;description?:string}}|null>('*[_type=="websiteSettings" && _id=="pama-website-settings"][0]{metaPixels[]{_key,name,pixelId,enabled},siteTitle,siteName,siteDescription,"faviconUrl":favicon.asset->url,branchesSeo,reviewsSeo}',{},{next:{revalidate:60,tags:['site-content']}})??{});
+
+export const getBranchPage=cache(async():Promise<Heading>=>{
+ const doc=await client.fetch<Partial<Heading>|null>('*[_type=="branchPageSettings" && _id=="pama-branch-page-settings"][0]{title,description,eyebrow,seoTitle,seoDescription}',{},{next:{revalidate:60,tags:['site-content']}});
+ return {...pageInfo.branches,...Object.fromEntries(Object.entries(doc||{}).filter(([,value])=>value!=null))};
+});

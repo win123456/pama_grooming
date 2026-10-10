@@ -7,11 +7,11 @@ import { pageInfo } from '@/lib/content';
 import {getArticles,getJournalSettings} from '@/lib/articles';
 import {JournalPage} from '@/components/journal';
 import {paginate} from '@/lib/pagination';
-import {getContact,getServices,getGallery,getPageSeo} from '@/lib/site-content';
+import {getContact,getServices,getGallery,getPageSeo,getBranchPage} from '@/lib/site-content';
 async function getPageInfo(page:string) {
  const base=findPage(page);
  if(!base)return undefined;
- const data=page==='journal'?await getJournalSettings():page==='services'?await getServices():page==='gallery'?await getGallery():page==='contact'?await getContact():null;
+ const data=page==='journal'?await getJournalSettings():page==='services'?await getServices():page==='gallery'?await getGallery():page==='contact'?await getContact():page==='branches'?await getBranchPage():null;
  return {...base,...data};
 }
 
@@ -29,15 +29,15 @@ export async function generateMetadata({params,searchParams}:Props):Promise<Meta
   const ids:Record<string,string>={services:'pama-service-settings',gallery:'pama-gallery-settings',contact:'pama-contact-settings',journal:'pama-journal-settings',branches:'pama-branch-page-settings',reviews:'pama-review-page-settings'};
   const seo=types[page]?await getPageSeo(types[page],ids[page]):{};
   const customTitle=seo.seoTitle;
-  const description=seo.seoDescription||info.description;
-  let title = customTitle||info.title;
+  const description=seo.seoDescription||findPage(page)!.description;
+  let title = customTitle||findPage(page)!.title;
   let url=`/${page}`;
   if(page==='journal') {
     const {pg}=await searchParams;
     const {page:current}=paginate(await getArticles(),Array.isArray(pg)?pg[0]:pg);
     if(current>1) {title+=` — หน้า ${current}`;url+=`?pg=${current}`;}
   }
-  return {title:customTitle?{absolute:title}:title,description,alternates:{canonical:url},openGraph:{title:`${title} | PAMA GROOMING`,description,url}};
+  return {title:customTitle?{absolute:title}:title,description,alternates:{canonical:url},openGraph:{title:customTitle?title:`${title} | PAMA GROOMING`,description,url}};
 }
 export default async function ContentPage({params,searchParams}:Props) {
   const {page} = await params;

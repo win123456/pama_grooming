@@ -1,0 +1,1 @@
+export function SharedBranchLink(){return <div style={{padding:16,border:'1px solid #52665b',borderRadius:8}}><p>เบอร์โทร LINE เวลาเปิด–ปิด และแผนที่ใช้ข้อมูลชุดเดียวกันทั้งเว็บไซต์</p><a href="/admin/structure/pama-contact-settings">เปิดแก้ข้อมูลสาขา →</a></div>;}
